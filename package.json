@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "http-status": "^2.1.0",
     "mongoose": "^9.3.3",
     "next": "16.2.2",
     "react": "19.2.4",

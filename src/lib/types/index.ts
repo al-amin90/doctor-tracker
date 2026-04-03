@@ -1,15 +1,3 @@
-export type TDoctor = {
-  _id: string;
-  name: string;
-  specialization: string;
-  hospital: string;
-  phone: string;
-  email: string;
-  createdAt: string;
-  updatedAt: string;
-  patientCount?: number;
-};
-
 export type TPatient = {
   _id: string;
   name: string;
