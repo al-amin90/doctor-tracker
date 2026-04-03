@@ -25,7 +25,7 @@ const getAllDoctors = async (query: Record<string, unknown>) => {
     .fields();
 
   const [data, meta] = await Promise.all([
-    builder.modelQuery,
+    builder.modelQuery.lean(),
     builder.countTotal(),
   ]);
   return { data, meta };

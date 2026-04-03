@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from "next/server";
 import handleZodError from "../errors/handleZodError";
 import handleValidationError from "../errors/handleValidationError";
@@ -8,7 +9,7 @@ import { ZodError } from "zod";
 import { Handler } from "../types/error";
 import config from "@/config";
 
-const catchAsync = (fn: Handler): Handler => {
+const catchAsync = (fn: any): Handler => {
   return async (req, context) => {
     try {
       return await fn(req, context);
@@ -18,7 +19,6 @@ const catchAsync = (fn: Handler): Handler => {
   };
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function handleError(err: any): NextResponse {
   let statusCode = 500;
   let message = "Something went wrong!";
