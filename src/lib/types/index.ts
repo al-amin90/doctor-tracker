@@ -1,18 +1,5 @@
 import { IDoctor } from "@/modules/doctor/doctor.interface";
-
-export type TPatient = {
-  _id: string;
-  name: string;
-  age: number;
-  gender: "male" | "female" | "other";
-  condition: string;
-  phone: string;
-  email: string;
-  doctorId: string;
-  doctor?: IDoctor;
-  createdAt: string;
-  updatedAt: string;
-};
+import { TPatient } from "@/modules/patient/patient.interface";
 
 export type TUser = {
   _id: string;
