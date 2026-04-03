@@ -2,6 +2,7 @@ import catchAsync, { handleError } from "@/lib/utils/catchAsync";
 import sendResponse from "@/lib/utils/sendResponse";
 import { doctorServices } from "@/modules/doctor/doctor.service";
 import { createDoctorValidation } from "@/modules/doctor/doctor.validation";
+import status from "http-status";
 import { NextRequest } from "next/server";
 
 export const GET = catchAsync(async (req: NextRequest) => {
@@ -16,7 +17,7 @@ export const GET = catchAsync(async (req: NextRequest) => {
   const { data, meta } = await doctorServices.getAllDoctors(query);
 
   return sendResponse({
-    statusCode: 200,
+    statusCode: status.OK,
     success: true,
     message: "Doctors fetched",
     meta,
@@ -31,7 +32,7 @@ export const POST = catchAsync(async (req: NextRequest) => {
   const doctor = await doctorServices.createDoctor(body);
 
   return sendResponse({
-    statusCode: 201,
+    statusCode: status.CREATED,
     success: true,
     message: "Doctor created",
     data: doctor,
