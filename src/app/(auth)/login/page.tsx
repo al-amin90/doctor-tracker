@@ -17,6 +17,7 @@ import {
 import { useAppDispatch } from "@/redux/store";
 import { useLoginMutation } from "@/redux/features/auth/authApi";
 import { setUser } from "@/redux/features/auth/authSlice";
+import Link from "next/link";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -155,6 +156,27 @@ const LoginPage = () => {
                   "Sign in"
                 )}
               </Button>
+
+              <div className="relative mt-2">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-white/10" />
+                </div>
+                <div className="relative flex justify-center text-xs">
+                  <span className="bg-transparent px-3 text-blue-300/60">
+                    Don&apos;t have an account?
+                  </span>
+                </div>
+              </div>
+
+              <Link href="/register" className="block mt-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full border-white/20 bg-white/5 text-blue-200 hover:bg-white/10 hover:text-white hover:border-white/30 transition-all h-10"
+                >
+                  Create an account
+                </Button>
+              </Link>
             </form>
           </CardContent>
         </Card>

@@ -10,6 +10,13 @@ interface ILoginRequest {
   password: string;
 }
 
+interface IRegisterRequest {
+  name: string;
+  email: string;
+  password: string;
+  role: string;
+}
+
 interface IAuthResponse {
   success: boolean;
   message: string;
@@ -21,7 +28,7 @@ interface IAuthResponse {
 
 const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    register: builder.mutation<IAuthResponse, ILoginRequest>({
+    register: builder.mutation<IAuthResponse, IRegisterRequest>({
       query: (credentials: IRegisterPayload) => ({
         url: "auth/register",
         method: "POST",
