@@ -30,11 +30,14 @@ export const GET = catchAsync(
 
 export const POST = catchAsync(
   auth("admin")(async (req: NextRequest) => {
- const body = await req.json()
-      await createPatientValidation.parseAsync({ body })
-      const patient = await createPatientService(body)
-      return sendResponse({ statusCode: status.CREATED, success: true, message: 'Patient created', data: patient })
-
-   
+    const body = await req.json();
+    await createPatientValidation.parseAsync({ body });
+    const patient = await createPatientService(body);
+    return sendResponse({
+      statusCode: status.CREATED,
+      success: true,
+      message: "Patient created",
+      data: patient,
+    });
   }),
 );
