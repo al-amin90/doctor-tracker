@@ -3,7 +3,8 @@ import AppError from "@/lib/errors/AppError";
 import PatientModel from "./patient.model";
 import { IPatient } from "./patient.interface";
 import dbConnect from "@/lib/db/mongodb";
-import { searchableFields } from "./patient.constant";
+
+const searchFields = ["name", "condition", "email"];
 
 const createPatient = async (payload: Partial<IPatient>) => {
   await dbConnect();
@@ -13,8 +14,6 @@ const createPatient = async (payload: Partial<IPatient>) => {
 
 const getAllPatients = async (query: Record<string, unknown>) => {
   await dbConnect();
-
-  const searchFields = ["name", "condition", "email"];
 
   const builder = new QueryBuilder(
     PatientModel.find().populate("doctorId", "name specialization hospital"),
@@ -42,7 +41,7 @@ const getPatientsByDoctor = async (
     PatientModel.find({ doctorId }).populate("doctorId", "name specialization"),
     query,
   )
-    .search(searchableFields)
+    .search(searchFields)
     .filter()
     .sort()
     .paginate();

@@ -1,7 +1,7 @@
 import mongoose, { model, Schema } from "mongoose";
 import { IPatient } from "./patient.interface";
 
-const PatientSchema = new Schema<IPatient>(
+const patientSchema = new Schema<IPatient>(
   {
     name: { type: String, index: true },
     age: { type: Number, min: 0 },
@@ -22,7 +22,19 @@ const PatientSchema = new Schema<IPatient>(
   { timestamps: true },
 );
 
+patientSchema.pre("find", function () {
+  this.find({ isDeleted: { $ne: true } });
+});
+
+patientSchema.pre("findOne", function () {
+  this.find({ isDeleted: { $ne: true } });
+});
+
+patientSchema.pre("aggregate", function () {
+  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
+});
+
 const PatientModel =
-  mongoose.models.Patient || model<IPatient>("Patient", PatientSchema);
+  mongoose.models.Patient || model<IPatient>("Patient", patientSchema);
 
 export default PatientModel;
