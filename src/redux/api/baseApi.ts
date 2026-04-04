@@ -1,12 +1,13 @@
+// import { RootState } from "@reduxjs/toolkit/query";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { RootState } from "../store";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:3000/api",
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
-    // Safely get the token from Redux state
-    const state = getState();
-    let token = state?.auth?.token;
+    const state = getState() as RootState;
+    let token = state?.auth?.accessToken;
 
     if (typeof window === "undefined") {
       return headers;
