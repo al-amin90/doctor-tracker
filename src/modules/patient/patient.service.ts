@@ -1,74 +1,82 @@
-import dbConnect from "@/lib/db/mongodb";
-import { IDoctor } from "./patient.interface";
-import DoctorModel from "./doctor.model";
 import QueryBuilder from "@/lib/builder/QueryBuilder";
 import AppError from "@/lib/errors/AppError";
-import status from "http-status";
+import PatientModel from "./patient.model";
+import { IPatient } from "./patient.interface";
+import dbConnect from "@/lib/db/mongodb";
+import { searchableFields } from "./patient.constant";
 
-const createDoctor = async (payload: Partial<IDoctor>) => {
+const createPatient = async (payload: Partial<IPatient>) => {
   await dbConnect();
 
-  const result = DoctorModel.create(payload);
-  return result;
+  return PatientModel.create(payload);
 };
 
-const getAllDoctors = async (query: Record<string, unknown>) => {
+const getAllPatients = async (query: Record<string, unknown>) => {
   await dbConnect();
 
-  const searchFields = ["name", "specialization", "hospital", "email"];
-
-  const builder = new QueryBuilder(DoctorModel.find(), query)
-    .search(searchFields)
+  const builder = new QueryBuilder(
+    PatientModel.find().populate("doctorId", "name specialization hospital"),
+    query,
+  )
+    .search(searchableFields)
     .filter()
     .sort()
     .paginate()
     .fields();
 
   const [data, meta] = await Promise.all([
-    builder.modelQuery.lean(),
+    builder.modelQuery,
     builder.countTotal(),
   ]);
   return { data, meta };
 };
 
-const getDoctorById = async (id: string) => {
+const getPatientsByDoctor = async (
+  doctorId: string,
+  query: Record<string, unknown>,
+) => {
   await dbConnect();
-  const doctor = await DoctorModel.findById(id);
+  const builder = new QueryBuilder(
+    PatientModel.find({ doctorId }).populate("doctorId", "name specialization"),
+    query,
+  )
+    .search(searchableFields)
+    .filter()
+    .sort()
+    .paginate();
 
-  if (!doctor) throw new AppError(status.NOT_FOUND, "Doctor not found");
-
-  return doctor;
+  const [data, meta] = await Promise.all([
+    builder.modelQuery,
+    builder.countTotal(),
+  ]);
+  return { data, meta };
 };
 
-const updateDoctor = async (id: string, payload: Partial<IDoctor>) => {
+const updatePatient = async (id: string, payload: Partial<IPatient>) => {
   await dbConnect();
-
-  const doctor = await DoctorModel.findByIdAndUpdate(id, payload, {
+  const patient = await PatientModel.findByIdAndUpdate(id, payload, {
     new: true,
     runValidators: true,
   });
-
-  if (!doctor) throw new AppError(status.NOT_FOUND, "Doctor not found");
-
-  return doctor;
+  if (!patient) throw new AppError(404, "Patient not found");
+  return patient;
 };
 
-const deleteDoctor = async (id: string) => {
+const deletePatient = async (id: string) => {
   await dbConnect();
-  const doctor = await DoctorModel.findByIdAndUpdate(
+  const patient = await PatientModel.findByIdAndUpdate(
     id,
     { isDeleted: true },
     { new: true },
   );
-
-  if (!doctor) throw new AppError(status.NOT_FOUND, "Doctor not found");
-  return doctor;
+  if (!patient) throw new AppError(404, "Patient not found");
+  return patient;
 };
 
-export const doctorServices = {
-  createDoctor,
-  getAllDoctors,
-  getDoctorById,
-  updateDoctor,
-  deleteDoctor,
+export const patientServices = {
+  createPatient,
+  getAllPatients,
+  getPatientsByDoctor,
+  updatePatient,
+  deletePatient,
 };
