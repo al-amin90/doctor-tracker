@@ -44,7 +44,7 @@ const authApi = baseApi.injectEndpoints({
       }),
     }),
 
-    getMe: builder.query({
+    getMe: builder.query<IAuthResponse, void>({
       query: () => ({
         url: "auth/me",
         method: "GET",

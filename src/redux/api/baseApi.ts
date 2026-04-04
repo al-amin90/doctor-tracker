@@ -1,6 +1,11 @@
 // import { RootState } from "@reduxjs/toolkit/query";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
+import {
+  BaseQueryFn,
+  FetchArgs,
+  FetchBaseQueryError,
+} from "@reduxjs/toolkit/query";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:3000/api",
@@ -29,18 +34,26 @@ const baseQuery = fetchBaseQuery({
   },
 });
 
-const baseQueryWithRefreshToken = async (args, api, extraOptions) => {
+const baseQueryWithRefreshToken: BaseQueryFn<
+  string | FetchArgs,
+  unknown,
+  FetchBaseQueryError
+> = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
 
-  if (result?.error?.status === 401) {
-    // toast.error("Your Token is Expired");
-    // removeToken("access_token");
-    // api.dispatch(logout());
+  console.log("���� API Response:", result?.error?.status);
 
-    localStorage.removeItem("token");
+  if (result?.error?.status === 401) {
+    console.warn("Token expired Unauthorized");
+
+    localStorage.removeItem("accessToken");
     localStorage.removeItem("persist:auth");
 
-    window.location.href = "/login";
+    api.dispatch({ type: "auth/logoutUser" });
+
+    if (typeof window !== "undefined") {
+      window.location.href = "/login";
+    }
   }
 
   return result;
@@ -49,6 +62,6 @@ const baseQueryWithRefreshToken = async (args, api, extraOptions) => {
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: baseQueryWithRefreshToken,
-  tagTypes: ["auth"],
+  tagTypes: ["auth", "doctor"],
   endpoints: () => ({}),
 });
