@@ -38,21 +38,20 @@ userSchema.post("save", async function (doc, next) {
   next();
 });
 
-userSchema.pre('find', function () {
-  this.find({ isDeleted: { $ne: true } })
+userSchema.pre("find", function () {
+  this.find({ isDeleted: { $ne: true } });
+});
 
-})
+userSchema.pre("findOne", function () {
+  this.find({ isDeleted: { $ne: true } });
+});
 
-userSchema.pre('findOne',  function () {
-  this.find({ isDeleted: { $ne: true } })
-})
-
-userSchema.pre('aggregate', function () {
-  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } })
-})
-
+userSchema.pre("aggregate", function () {
+  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
+});
 
 const UserModel =
-  mongoose.models.User as IUserModel || mongoose.model<IUser, IUserModel>("User", userSchema);
+  (mongoose.models.User as IUserModel) ||
+  mongoose.model<IUser, IUserModel>("User", userSchema);
 
 export default UserModel;

@@ -30,8 +30,6 @@ async function dbConnect(): Promise<mongoose.Connection> {
 
   cached.conn = await cached.promise;
 
-  console.log("jit");
-
   return cached.conn;
 }
 

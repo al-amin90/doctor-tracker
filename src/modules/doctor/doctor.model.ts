@@ -1,7 +1,7 @@
 import mongoose, { model, Schema } from "mongoose";
 import { IDoctor } from "./doctor.interface";
 
-const doctorSchema = new Schema<IDoctor>(
+const DoctorSchema = new Schema<IDoctor>(
   {
     name: { type: String, index: true },
     specialization: { type: String, index: true },
@@ -17,19 +17,19 @@ const doctorSchema = new Schema<IDoctor>(
   { timestamps: true },
 );
 
-doctorSchema.pre("find", function () {
+DoctorSchema.pre("find", function () {
   this.find({ isDeleted: { $ne: true } });
 });
 
-doctorSchema.pre("findOne", function () {
+DoctorSchema.pre("findOne", function () {
   this.find({ isDeleted: { $ne: true } });
 });
 
-doctorSchema.pre("aggregate", function () {
+DoctorSchema.pre("aggregate", function () {
   this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
 });
 
 const DoctorModel =
-  mongoose.models.Doctor || model<IDoctor>("Doctor", doctorSchema);
+  mongoose.models.Doctor || model<IDoctor>("Doctor", DoctorSchema);
 
 export default DoctorModel;
