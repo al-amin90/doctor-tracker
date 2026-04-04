@@ -11,7 +11,3 @@ export type TGenericErrorResponse = {
   errorSources: TErrorSources;
 };
 
-export type Handler = (
-  req: NextRequest,
-  context?: { params: Record<string, string> },
-) => Promise<NextResponse>;

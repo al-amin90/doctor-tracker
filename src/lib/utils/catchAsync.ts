@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import handleZodError from "../errors/handleZodError";
 import handleValidationError from "../errors/handleValidationError";
 import handleCastError from "../errors/handleCastError";
 import handleDuplicateError from "../errors/handleDuplicateError";
 import AppError from "../errors/AppError";
 import { ZodError } from "zod";
-import { Handler } from "../types/error";
 import config from "@/config";
+import { Handler } from "@/modules/auth/auth.interface";
 
-const catchAsync = (fn: any): Handler => {
-  return async (req, context) => {
+const catchAsync = (fn: Handler): Handler => {
+  return async (req:NextRequest, context?:any) => {
     try {
       return await fn(req, context);
     } catch (error) {

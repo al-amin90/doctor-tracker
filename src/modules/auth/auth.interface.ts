@@ -1,4 +1,17 @@
+import { JwtPayload } from "jsonwebtoken";
 import { Model } from "mongoose";
+import { NextRequest, NextResponse } from "next/server";
+
+export interface IAuthRequest extends NextRequest {
+  user: JwtPayload
+}
+
+export type Handler = (
+  req: NextRequest,
+  context?: { params: Record<string, string> },
+) => Promise<NextResponse>;
+
+
 
 export type ILoginPayload = {
   email: string;

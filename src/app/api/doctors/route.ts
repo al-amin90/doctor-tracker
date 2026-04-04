@@ -1,3 +1,4 @@
+import auth from "@/lib/middlewares/auth";
 import catchAsync, { handleError } from "@/lib/utils/catchAsync";
 import sendResponse from "@/lib/utils/sendResponse";
 import { doctorServices } from "@/modules/doctor/doctor.service";
@@ -5,7 +6,7 @@ import { createDoctorValidation } from "@/modules/doctor/doctor.validation";
 import status from "http-status";
 import { NextRequest } from "next/server";
 
-export const GET = catchAsync(async (req: NextRequest) => {
+export const GET = catchAsync( auth("admin", "user")(async (req: NextRequest) => {
   const { searchParams } = new URL(req.url);
 
   const query: Record<string, unknown> = {};
@@ -23,9 +24,9 @@ export const GET = catchAsync(async (req: NextRequest) => {
     meta,
     data,
   });
-});
+}));
 
-export const POST = catchAsync(async (req: NextRequest) => {
+export const POST = catchAsync(auth('admin')(async (req: NextRequest) => {
   const body = await req.json();
 
   await createDoctorValidation.parseAsync({ body });
@@ -37,4 +38,4 @@ export const POST = catchAsync(async (req: NextRequest) => {
     message: "Doctor created",
     data: doctor,
   });
-});
+}));

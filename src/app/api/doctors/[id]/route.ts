@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import auth from "@/lib/middlewares/auth";
 import catchAsync from "@/lib/utils/catchAsync";
 import sendResponse from "@/lib/utils/sendResponse";
 import { doctorServices } from "@/modules/doctor/doctor.service";
@@ -7,7 +8,7 @@ import status from "http-status";
 
 import { NextRequest } from "next/server";
 
-export const GET = catchAsync(async (req: NextRequest, { params }: any) => {
+export const GET = catchAsync(auth("admin", "user")(async (req: NextRequest, { params }: any) => {
   const { id } = await params;
 
   const doctor = await doctorServices.getDoctorById(id);
@@ -18,9 +19,9 @@ export const GET = catchAsync(async (req: NextRequest, { params }: any) => {
     message: "Doctor fetched",
     data: doctor,
   });
-});
+}));
 
-export const PATCH = catchAsync(async (req: NextRequest, { params }: any) => {
+export const PATCH = catchAsync(auth('admin')(async (req: NextRequest, { params }: any) => {
   const { id } = await params;
 
   const body = await req.json();
@@ -34,9 +35,9 @@ export const PATCH = catchAsync(async (req: NextRequest, { params }: any) => {
     message: "Doctor updated",
     data: doctor,
   });
-});
+}));
 
-export const DELETE = catchAsync(async (req: NextRequest, { params }: any) => {
+export const DELETE = catchAsync(auth('admin')(async (req: NextRequest, { params }: any) => {
   const { id } = await params;
 
   await doctorServices.deleteDoctor(id);
@@ -47,4 +48,4 @@ export const DELETE = catchAsync(async (req: NextRequest, { params }: any) => {
     message: "Doctor deleted",
     data: null,
   });
-});
+}));
