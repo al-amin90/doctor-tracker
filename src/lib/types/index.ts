@@ -1,13 +1,6 @@
 import { IDoctor } from "@/modules/doctor/doctor.interface";
 import { TPatient } from "@/modules/patient/patient.interface";
 
-export type TUser = {
-  _id: string;
-  name: string;
-  email: string;
-  role: "admin" | "user";
-};
-
 export type TMeta = {
   page: number;
   limit: number;
