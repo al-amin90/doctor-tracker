@@ -14,11 +14,13 @@ const createPatient = async (payload: Partial<IPatient>) => {
 const getAllPatients = async (query: Record<string, unknown>) => {
   await dbConnect();
 
+  const searchFields = ["name", "condition", "email"];
+
   const builder = new QueryBuilder(
     PatientModel.find().populate("doctorId", "name specialization hospital"),
     query,
   )
-    .search(searchableFields)
+    .search(searchFields)
     .filter()
     .sort()
     .paginate()
