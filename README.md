@@ -1,6 +1,6 @@
 # Doctor Tracker
 
-## A Secure full-stack project that manage doctors and their patients. A real Time Dashboard, advanced search/filter/pagination, JWT-based authentication with httpOnly cookies, and a clean modular backend architecture — all within a single Next.js application.
+A Secure full-stack project that manage doctors and their patients. A real Time Dashboard, advanced search/filter/pagination, JWT-based authentication with httpOnly cookies, and a clean modular backend architecture — all within a single Next.js application.
 
 ## Setup Guide
 
@@ -84,14 +84,13 @@ _(desktop screenshots here after running the app)_
 this is dashboard  
 ![App Screenshot](./public/dashboard.png)
 
-this is doctor list  
 ![App Screenshot](./public/doctorPC.png)
 
 this is doctor assign pathient  
 ![App Screenshot](./public/modalInPC.png)
 
 _(mobile screenshots here after running the app)_
-![App Screenshot](./public/dashboardMobile2.png)
+![App Screenshot](./public/dashbordic.png)
 ![App Screenshot](./public/mobilePathiens.png)
 ![App Screenshot](./public/modalInMobile.png)
 ![App Screenshot](./public/mobilePathiens.png)
