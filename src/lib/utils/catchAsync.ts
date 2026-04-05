@@ -6,7 +6,6 @@ import handleCastError from "../errors/handleCastError";
 import handleDuplicateError from "../errors/handleDuplicateError";
 import AppError from "../errors/AppError";
 import { ZodError } from "zod";
-import config from "@/config";
 import { Handler } from "@/modules/auth/auth.interface";
 
 const catchAsync = (fn: Handler): Handler => {

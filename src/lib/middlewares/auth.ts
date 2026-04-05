@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import config from "@/config";
 import AppError from "@/lib/errors/AppError";
 import { handleError } from "@/lib/utils/catchAsync";
 import { Handler, IAuthRequest } from "@/modules/auth/auth.interface";

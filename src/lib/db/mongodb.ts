@@ -1,4 +1,3 @@
-import config from "@/config";
 import mongoose from "mongoose";
 
 const MONGODB_URI = process.env.DATABASE_URL as string;

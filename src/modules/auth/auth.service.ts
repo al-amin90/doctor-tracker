@@ -1,5 +1,4 @@
 import AppError from "@/lib/errors/AppError";
-import config from "@/config";
 import { createToken } from "./auth.utils";
 import UserModel from "./auth.model";
 import dbConnect from "@/lib/db/mongodb";

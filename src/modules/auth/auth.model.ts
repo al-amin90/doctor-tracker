@@ -1,5 +1,4 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
-import config from "@/config";
 import bcrypt from "bcrypt";
 import { IUser, IUserModel } from "./auth.interface";
 
