@@ -80,14 +80,18 @@ export default function PatientForm({
 
   useEffect(() => {
     if (open) {
+      const doctorId = hideDoctorField
+        ? defaultDoctorId
+        : ((defaultValues?.doctorId?._id as string | undefined) ?? "");
+
       reset({
         ...defaultValues,
         age: defaultValues?.age ?? undefined,
         gender: defaultValues?.gender ?? undefined,
-        doctorId: (defaultValues?.doctorId?._id as string | undefined) ?? "",
+        doctorId: doctorId ?? "",
       });
     }
-  }, [open, defaultValues, defaultDoctorId, reset]);
+  }, [open, defaultValues, defaultDoctorId, reset, hideDoctorField]);
 
   //   here is from filed infos
   const textFields: {

@@ -62,7 +62,7 @@ export default function DoctorsPage() {
     url: "/doctors",
     params: {
       page,
-      limit: 10,
+      limit: 5,
       searchTerm,
       specialization: specialization || undefined,
       ...(startDate && { startDate }),
@@ -231,6 +231,7 @@ export default function DoctorsPage() {
             {meta?.total ?? 0} total doctors registered
           </p>
         </div>
+
         <Button
           onClick={() => setCreateOpen(true)}
           className="bg-blue-600 hover:bg-blue-700 text-white gap-2 self-start sm:self-auto"
@@ -252,6 +253,7 @@ export default function DoctorsPage() {
             placeholder="Search by name, hospital..."
             className="w-64"
           />
+
           <Select
             value={specialization}
             onValueChange={(v) => {
@@ -271,6 +273,7 @@ export default function DoctorsPage() {
               ))}
             </SelectContent>
           </Select>
+
           <DateRangePicker
             startDate={startDate}
             endDate={endDate}
@@ -280,6 +283,7 @@ export default function DoctorsPage() {
               setPage(1);
             }}
           />
+
           {(searchTerm || specialization || startDate) && (
             <Button
               variant="ghost"
@@ -309,7 +313,7 @@ export default function DoctorsPage() {
       />
 
       {/* Pagination */}
-      {meta && meta.totalPage > 1 && (
+      {meta && meta.totalPage >= 1 && (
         <Pagination
           page={page}
           totalPage={meta.totalPage}
@@ -317,7 +321,7 @@ export default function DoctorsPage() {
         />
       )}
 
-      {/* Modals */}
+      {/*all modals are here */}
       <DoctorForm
         open={createOpen}
         onOpenChange={setCreateOpen}

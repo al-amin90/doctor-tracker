@@ -40,22 +40,14 @@ export default function PatientListModal({
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [addOpen, setAddOpen] = useState(false);
 
-  const buildPatientQueryParams = () => {
-    const params: Record<string, any> = {
-      page,
-      limit: 6,
-      searchTerm,
-    };
-
-    if (doctor?._id) params.doctorId = doctor._id;
-
-    return params;
-  };
-
-  const { data, isLoading } = useGetDynamicQuery(
+  const { data, isLoading, refetch } = useGetDynamicQuery(
     {
-      url: "/patients",
-      params: buildPatientQueryParams(),
+      url: `/doctors/${doctor?._id}/patients`,
+      params: {
+        page,
+        limit: 5,
+        searchTerm,
+      },
     },
     {
       skip: !doctor?._id,
@@ -67,8 +59,13 @@ export default function PatientListModal({
 
   const handleDelete = async () => {
     if (!deleteId) return;
+
     try {
-      await deletePatient(deleteId).unwrap();
+      await deletePatient({
+        url: `patients/${deleteId}`,
+      }).unwrap();
+      refetch();
+
       toast.success("Patient removed");
       setDeleteId(null);
     } catch {
@@ -77,11 +74,13 @@ export default function PatientListModal({
   };
 
   const handleAdd = async (formData: Record<string, unknown>) => {
+    const formmateData = { ...formData, doctorId: doctor?._id };
+    console.log("formmateData", formmateData);
+
     try {
-      await createPatient({
-        doctorId: doctor!._id,
-        data: formData as never,
-      }).unwrap();
+      await createPatient({ url: "patients", data: formmateData }).unwrap();
+      refetch();
+
       toast.success("Patient added");
       setAddOpen(false);
     } catch (err: unknown) {
@@ -176,7 +175,7 @@ export default function PatientListModal({
             )}
           </div>
 
-          {meta && meta.totalPage > 1 && (
+          {meta && meta.totalPage >= 1 && (
             <div className="shrink-0 pt-3 border-t border-slate-100 dark:border-slate-800">
               <Pagination
                 page={page}

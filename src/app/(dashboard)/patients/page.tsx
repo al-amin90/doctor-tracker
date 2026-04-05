@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import DataTable from "@/components/shared/DataTable";
 import Pagination from "@/components/shared/Pagination";
@@ -63,7 +63,7 @@ export default function PatientsPage() {
     url: "/patients",
     params: {
       page,
-      limit: 1,
+      limit: 5,
       searchTerm,
       gender: gender || undefined,
       condition: condition || undefined,
@@ -78,10 +78,6 @@ export default function PatientsPage() {
 
   const patients = data?.data ?? [];
   const meta = data?.meta;
-
-  useEffect(() => {
-    setPage(1);
-  }, [searchTerm, gender, condition, startDate, endDate, setPage]);
 
   useEffect(() => {
     console.log("PAGE CHANGED TO:", page);
@@ -245,6 +241,7 @@ export default function PatientsPage() {
             {meta?.total ?? 0} total patients registered
           </p>
         </div>
+
         <Button
           onClick={() => setCreateOpen(true)}
           className="bg-blue-600 hover:bg-blue-700 text-white gap-2 self-start sm:self-auto"
@@ -259,13 +256,20 @@ export default function PatientsPage() {
         <div className="flex flex-wrap items-center gap-3">
           <SearchInput
             value={searchTerm}
-            onChange={(v) => setSearchTerm(v)}
+            onChange={(v) => {
+              setSearchTerm(v);
+              setPage(1);
+            }}
             placeholder="Search by name, condition..."
             className="w-64"
           />
+
           <Select
             value={gender}
-            onValueChange={(v) => setGender(v === "all" ? "" : v)}
+            onValueChange={(v) => {
+              setGender(v === "all" ? "" : v);
+              setPage(1);
+            }}
           >
             <SelectTrigger className="w-32 h-9 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm">
               <SelectValue placeholder="Gender" />
@@ -277,9 +281,13 @@ export default function PatientsPage() {
               <SelectItem value="other">Other</SelectItem>
             </SelectContent>
           </Select>
+
           <Select
             value={condition}
-            onValueChange={(v) => setCondition(v === "all" ? "" : v)}
+            onValueChange={(v) => {
+              setCondition(v === "all" ? "" : v);
+              setPage(1);
+            }}
           >
             <SelectTrigger className="w-40 h-9 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm">
               <SelectValue placeholder="Condition" />
@@ -293,14 +301,17 @@ export default function PatientsPage() {
               ))}
             </SelectContent>
           </Select>
+
           <DateRangePicker
             startDate={startDate}
             endDate={endDate}
             onChange={(s, e) => {
               setStartDate(s);
               setEndDate(e);
+              setPage(1);
             }}
           />
+
           {(searchTerm || gender || condition || startDate) && (
             <Button
               variant="ghost"
