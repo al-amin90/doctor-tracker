@@ -17,3 +17,5 @@ export interface RootState {
   auth: IAuthState;
   [baseApi.reducerPath]: ReturnType<typeof baseApi.reducer>;
 }
+
+export type TReduxQuery = { url: string; data: unknown; params: unknown };
