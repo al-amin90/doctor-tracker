@@ -84,6 +84,7 @@ export default function StatsCard({
           <Icon className="h-5 w-5" />
         </div>
       </div>
+
       {trend && (
         <div className="mt-4 pt-3 border-t border-black/5 dark:border-white/5">
           <span

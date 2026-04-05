@@ -53,6 +53,7 @@ export default function DataTable<T>({
             ))}
           </TableRow>
         </TableHeader>
+
         <TableBody>
           {isLoading ? (
             Array.from({ length: 5 }).map((_, i) => (

@@ -30,6 +30,7 @@ export default function Pagination({ page, totalPage, onPageChange }: Props) {
           {totalPage}
         </span>
       </p>
+
       <div className="flex items-center gap-1">
         <Button
           variant="outline"
@@ -40,6 +41,7 @@ export default function Pagination({ page, totalPage, onPageChange }: Props) {
         >
           <ChevronLeft className="h-4 w-4" />
         </Button>
+
         {pages.map((p) => (
           <Button
             key={p}
@@ -55,6 +57,7 @@ export default function Pagination({ page, totalPage, onPageChange }: Props) {
             {p}
           </Button>
         ))}
+
         <Button
           variant="outline"
           size="icon"

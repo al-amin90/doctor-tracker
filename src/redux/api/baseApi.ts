@@ -1,5 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // import { RootState } from "@reduxjs/toolkit/query";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {
+  BaseQueryFn,
+  createApi,
+  FetchArgs,
+  fetchBaseQuery,
+  FetchBaseQueryError,
+} from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
 
 const baseQuery = fetchBaseQuery({
@@ -37,13 +44,16 @@ const baseQuery = fetchBaseQuery({
   },
 });
 
-const baseQueryWithRefreshToken = async (args, api, extraOptions) => {
-  let result = await baseQuery(args, api, extraOptions);
+const baseQueryWithRefreshToken: BaseQueryFn<
+  string | FetchArgs,
+  unknown,
+  FetchBaseQueryError
+> = async (args: string | FetchArgs, api: any, extraOptions?: any) => {
+  const result = await baseQuery(args, api, extraOptions);
 
   if (result?.error?.status === 401) {
     localStorage.removeItem("token");
     localStorage.removeItem("persist:authInfo");
-
     window.location.href = "/login";
   }
 

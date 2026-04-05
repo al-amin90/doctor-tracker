@@ -50,6 +50,7 @@ export default function DailyRegistrationChart({ data }: Props) {
           tickLine={false}
           allowDecimals={false}
         />
+
         <Tooltip
           contentStyle={{
             background: "#1e293b",
@@ -61,6 +62,7 @@ export default function DailyRegistrationChart({ data }: Props) {
           }}
           formatter={(v: number) => [v, "Patients"]}
         />
+
         <Area
           type="monotone"
           dataKey="patients"

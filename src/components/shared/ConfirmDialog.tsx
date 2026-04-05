@@ -39,6 +39,7 @@ export default function ConfirmDialog({
             {description}
           </AlertDialogDescription>
         </AlertDialogHeader>
+
         <AlertDialogFooter>
           <AlertDialogCancel className="border-slate-200 dark:border-slate-700">
             Cancel

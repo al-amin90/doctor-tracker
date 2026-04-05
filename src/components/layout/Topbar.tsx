@@ -23,8 +23,8 @@ export default function Topbar() {
     "Doctor Tracker";
 
   return (
-    <header className="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-6 shrink-0 sticky top-0 z-30">
-      <div>
+    <header className="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between pr-6 pl-16 lg:pl-6 shrink-0 sticky top-0 z-30">
+      <div className=" ">
         <h2 className="text-lg font-semibold text-slate-800 dark:text-white">
           {title}
         </h2>
@@ -37,6 +37,7 @@ export default function Topbar() {
           })}
         </p>
       </div>
+
       <div className="flex items-center gap-3">
         <Button
           variant="ghost"
@@ -45,6 +46,7 @@ export default function Topbar() {
         >
           <Bell className="h-5 w-5" />
         </Button>
+
         <div className="flex items-center gap-2 pl-3 border-l border-slate-200 dark:border-slate-700">
           <Avatar className="h-8 w-8">
             <AvatarFallback className="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 text-xs font-bold">
