@@ -78,20 +78,21 @@ export default function PatientForm({
 
   const doctors = doctorsData?.data ?? [];
 
+  console.log("defaultValues", defaultValues);
+  console.log("defaultValues?.doctorId?.name", defaultValues?.doctorId?.name);
+
   useEffect(() => {
     if (open) {
       reset({
         ...defaultValues,
         age: defaultValues?.age ?? undefined,
         gender: defaultValues?.gender ?? undefined,
-        doctorId:
-          defaultDoctorId ??
-          (defaultValues?.doctorId as string | undefined) ??
-          "",
+        doctorId: (defaultValues?.doctorId?._id as string | undefined) ?? "",
       });
     }
   }, [open, defaultValues, defaultDoctorId, reset]);
 
+  //   here is from filed infos
   const textFields: {
     name: keyof TForm;
     label: string;
@@ -146,61 +147,63 @@ export default function PatientForm({
             </div>
           ))}
 
-          {/* Gender */}
-          <div className="space-y-1">
-            <Label className="text-slate-700 dark:text-slate-300 text-sm">
-              Gender
-            </Label>
-            <Select
-              value={watch("gender")}
-              onValueChange={(v) =>
-                setValue("gender", v as "male" | "female" | "other")
-              }
-            >
-              <SelectTrigger className="h-9 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg">
-                <SelectValue placeholder="Select gender" />
-              </SelectTrigger>
-              <SelectContent className="bg-white dark:bg-slate-900">
-                {["male", "female", "other"].map((g) => (
-                  <SelectItem key={g} value={g} className="capitalize">
-                    {g}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            {errors.gender && (
-              <p className="text-xs text-red-500">{errors.gender.message}</p>
-            )}
-          </div>
-
-          {/* Doctor */}
-          {!hideDoctorField && (
+          <div className="flex gap-7">
+            {/* Gender */}
             <div className="space-y-1">
               <Label className="text-slate-700 dark:text-slate-300 text-sm">
-                Assigned Doctor
+                Gender
               </Label>
               <Select
-                value={watch("doctorId")}
-                onValueChange={(v) => setValue("doctorId", v)}
+                value={watch("gender")}
+                onValueChange={(v) =>
+                  setValue("gender", v as "male" | "female" | "other")
+                }
               >
                 <SelectTrigger className="h-9 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg">
-                  <SelectValue placeholder="Select doctor" />
+                  <SelectValue placeholder="Select gender" />
                 </SelectTrigger>
                 <SelectContent className="bg-white dark:bg-slate-900">
-                  {doctors.map((d) => (
-                    <SelectItem key={d._id} value={d._id}>
-                      {d.name}
+                  {["male", "female", "other"].map((g) => (
+                    <SelectItem key={g} value={g} className="capitalize">
+                      {g}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
-              {errors.doctorId && (
-                <p className="text-xs text-red-500">
-                  {errors.doctorId.message}
-                </p>
+              {errors.gender && (
+                <p className="text-xs text-red-500">{errors.gender.message}</p>
               )}
             </div>
-          )}
+
+            {/* Doctor */}
+            {!hideDoctorField && (
+              <div className="space-y-1">
+                <Label className="text-slate-700 dark:text-slate-300 text-sm">
+                  Assigned Doctor
+                </Label>
+                <Select
+                  value={watch("doctorId")}
+                  onValueChange={(v) => setValue("doctorId", v)}
+                >
+                  <SelectTrigger className="h-9 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg">
+                    <SelectValue placeholder="Select doctor" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white dark:bg-slate-900">
+                    {doctors.map((d) => (
+                      <SelectItem key={d._id} value={d._id}>
+                        {d.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {errors.doctorId && (
+                  <p className="text-xs text-red-500">
+                    {errors.doctorId.message}
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
 
           <DialogFooter className="pt-2">
             <Button

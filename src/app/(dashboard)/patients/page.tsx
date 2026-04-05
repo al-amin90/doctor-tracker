@@ -63,7 +63,7 @@ export default function PatientsPage() {
     url: "/patients",
     params: {
       page,
-      limit: 10,
+      limit: 1,
       searchTerm,
       gender: gender || undefined,
       condition: condition || undefined,
@@ -222,7 +222,8 @@ export default function PatientsPage() {
     },
   ];
 
-  console.log("patients", patients);
+  console.log("data", data);
+  console.log("editPatient", editPatient);
 
   return (
     <div className="space-y-5">
@@ -322,7 +323,6 @@ export default function PatientsPage() {
         </div>
       </div>
 
-      {/* Table */}
       <DataTable
         data={patients}
         columns={columns}
@@ -331,8 +331,8 @@ export default function PatientsPage() {
         emptyMessage="No patients found."
       />
 
-      {/* Pagination */}
-      {meta && meta.totalPage > 1 && (
+      {/* pagination ys here*/}
+      {meta && meta.totalPage >= 1 && (
         <Pagination
           page={page}
           totalPage={meta.totalPage}
@@ -340,7 +340,7 @@ export default function PatientsPage() {
         />
       )}
 
-      {/* Modals */}
+      {/*all modals are here */}
       <PatientForm
         open={createOpen}
         onOpenChange={setCreateOpen}

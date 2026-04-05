@@ -11,8 +11,6 @@ type Props = {
 };
 
 export default function Pagination({ page, totalPage, onPageChange }: Props) {
-  if (totalPage <= 1) return null;
-
   const pages = Array.from({ length: Math.min(totalPage, 5) }, (_, i) => {
     if (totalPage <= 5) return i + 1;
     if (page <= 3) return i + 1;
