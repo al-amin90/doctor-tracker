@@ -26,17 +26,6 @@ export default function DashboardLayout({
     if (isError) router.replace("/login");
   }, [isError, router]);
 
-  useEffect(() => {
-    if (data?.data) {
-      dispatch(
-        setUser({
-          user: data.data,
-          accessToken: "",
-        }),
-      );
-    }
-  }, [data, dispatch]);
-
   if (!isAuthenticated && !data) {
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center">

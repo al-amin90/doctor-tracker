@@ -15,8 +15,10 @@ import { baseApi } from "./api/baseApi";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 const persistConfig = {
-  key: "auth",
+  key: "authInfo",
   storage,
+  version: 1,
+  whitelist: ["accessToken", "user", "isAuthenticated"],
 };
 
 const persistedReducer = persistReducer(persistConfig, authReducer);

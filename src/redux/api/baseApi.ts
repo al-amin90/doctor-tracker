@@ -1,11 +1,6 @@
 // import { RootState } from "@reduxjs/toolkit/query";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
-import {
-  BaseQueryFn,
-  FetchArgs,
-  FetchBaseQueryError,
-} from "@reduxjs/toolkit/query";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:3000/api",
@@ -18,42 +13,38 @@ const baseQuery = fetchBaseQuery({
       return headers;
     }
 
+    console.log("!token", token);
+    // If no token in state, try to get from localStorage (client-side only)
     if (!token) {
-      const raw = localStorage.getItem("persist:auth");
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        token = parsed.token ? JSON.parse(parsed.token) : null;
+      try {
+        const raw = localStorage.getItem("persist:authInfo");
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          token = parsed.token ? JSON.parse(parsed.token) : null;
+        }
+        console.log("rawf", raw);
+      } catch (e) {
+        console.error("Error parsing auth data:", e);
       }
     }
 
     if (token) {
       headers.set("Authorization", `Bearer ${token}`);
+      headers.set("x-tenantid", `school`);
     }
 
     return headers;
   },
 });
 
-const baseQueryWithRefreshToken: BaseQueryFn<
-  string | FetchArgs,
-  unknown,
-  FetchBaseQueryError
-> = async (args, api, extraOptions) => {
+const baseQueryWithRefreshToken = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
 
-  console.log("���� API Response:", result?.error?.status);
-
   if (result?.error?.status === 401) {
-    console.warn("Token expired Unauthorized");
+    localStorage.removeItem("token");
+    localStorage.removeItem("persist:authInfo");
 
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("persist:auth");
-
-    api.dispatch({ type: "auth/logoutUser" });
-
-    if (typeof window !== "undefined") {
-      window.location.href = "/login";
-    }
+    window.location.href = "/login";
   }
 
   return result;
