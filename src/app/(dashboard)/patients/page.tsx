@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import DataTable from "@/components/shared/DataTable";
 import Pagination from "@/components/shared/Pagination";
@@ -78,6 +78,14 @@ export default function PatientsPage() {
 
   const patients = data?.data ?? [];
   const meta = data?.meta;
+
+  useEffect(() => {
+    setPage(1);
+  }, [searchTerm, gender, condition, startDate, endDate, setPage]);
+
+  useEffect(() => {
+    console.log("PAGE CHANGED TO:", page);
+  }, [page]);
 
   const handleCreate = async (form: Record<string, unknown>) => {
     try {
@@ -251,19 +259,13 @@ export default function PatientsPage() {
         <div className="flex flex-wrap items-center gap-3">
           <SearchInput
             value={searchTerm}
-            onChange={(v) => {
-              setSearchTerm(v);
-              setPage(1);
-            }}
+            onChange={(v) => setSearchTerm(v)}
             placeholder="Search by name, condition..."
             className="w-64"
           />
           <Select
             value={gender}
-            onValueChange={(v) => {
-              setGender(v === "all" ? "" : v);
-              setPage(1);
-            }}
+            onValueChange={(v) => setGender(v === "all" ? "" : v)}
           >
             <SelectTrigger className="w-32 h-9 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm">
               <SelectValue placeholder="Gender" />
@@ -277,10 +279,7 @@ export default function PatientsPage() {
           </Select>
           <Select
             value={condition}
-            onValueChange={(v) => {
-              setCondition(v === "all" ? "" : v);
-              setPage(1);
-            }}
+            onValueChange={(v) => setCondition(v === "all" ? "" : v)}
           >
             <SelectTrigger className="w-40 h-9 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm">
               <SelectValue placeholder="Condition" />
@@ -300,7 +299,6 @@ export default function PatientsPage() {
             onChange={(s, e) => {
               setStartDate(s);
               setEndDate(e);
-              setPage(1);
             }}
           />
           {(searchTerm || gender || condition || startDate) && (

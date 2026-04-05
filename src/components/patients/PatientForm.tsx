@@ -78,9 +78,6 @@ export default function PatientForm({
 
   const doctors = doctorsData?.data ?? [];
 
-  console.log("defaultValues", defaultValues);
-  console.log("defaultValues?.doctorId?.name", defaultValues?.doctorId?.name);
-
   useEffect(() => {
     if (open) {
       reset({
