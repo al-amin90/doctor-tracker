@@ -1,6 +1,15 @@
 import React from "react";
 
-const PageHeadingTitle = ({ name = "Patients", meta }) => {
+interface Meta {
+  total: number;
+}
+
+interface Props {
+  name?: string;
+  meta?: Meta;
+}
+
+const PageHeadingTitle: React.FC<Props> = ({ name = "Patients", meta }) => {
   return (
     <div>
       <h1 className="text-xl font-bold text-slate-800 dark:text-white">

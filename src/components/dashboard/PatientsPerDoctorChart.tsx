@@ -65,7 +65,7 @@ export default function PatientsPerDoctorChart({ data }: Props) {
             boxShadow: "0 4px 24px rgba(0,0,0,0.3)",
           }}
           cursor={{ fill: "#3b82f610" }}
-          formatter={(value: number) => [value, "Patients"]}
+          formatter={(value) => [value || 0, "Patients"]}
         />
         <Bar dataKey="count" radius={[6, 6, 0, 0]} maxBarSize={48}>
           {trimmed.map((_, i) => (

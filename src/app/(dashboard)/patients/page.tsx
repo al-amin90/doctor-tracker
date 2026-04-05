@@ -191,7 +191,7 @@ export default function PatientsPage() {
       label: "Registered",
       render: (row: IPatient) => (
         <span className="text-xs text-slate-400">
-          {format(parseISO(row.createdAt), "MMM d, yyyy")}
+          {row.createdAt ? format(parseISO(row.createdAt), "MMM d, yyyy") : ""}
         </span>
       ),
     },

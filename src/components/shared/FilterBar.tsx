@@ -60,7 +60,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
           <Select
             value={gender}
             onValueChange={(v) => {
-              setGender(v === "all" ? "" : v);
+              setGender?.(v === "all" ? "" : v);
               setPage(1);
             }}
           >

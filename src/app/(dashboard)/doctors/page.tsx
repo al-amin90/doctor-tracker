@@ -211,7 +211,7 @@ export default function DoctorsPage() {
             className="h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg"
             onClick={(e) => {
               e.stopPropagation();
-              setDeleteId(row._id);
+              setDeleteId(row._id || null);
             }}
           >
             <Trash2 className="h-4 w-4" />
@@ -252,7 +252,7 @@ export default function DoctorsPage() {
         data={doctors}
         columns={columns}
         isLoading={isLoading}
-        rowKey={(r) => r._id}
+        rowKey={(r) => r._id || ''}
         emptyMessage="No doctors found. Add your first doctor."
       />
 

@@ -39,7 +39,7 @@ export default function Sidebar() {
   console.log("user", user);
 
   const handleLogout = async () => {
-    await logout();
+    await logout({});
     dispatch(logoutUser());
     toast.success("Logged out");
     router.push("/login");

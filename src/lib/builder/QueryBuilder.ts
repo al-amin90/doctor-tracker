@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Query } from "mongoose";
 
 class QueryBuilder<T> {
@@ -34,9 +35,9 @@ class QueryBuilder<T> {
     ];
     excludeFields.forEach((el) => delete queryObj[el]);
 
-    const finalQuery = { isDeleted: false, ...queryObj };
+    const finalQuery: Record<string, any> = { isDeleted: false, ...queryObj };
 
-    const dateFilter = {};
+    const dateFilter: Record<string, any> = {};
 
     if (this.query.startDate) {
       dateFilter.$gte = new Date(this.query.startDate as string);

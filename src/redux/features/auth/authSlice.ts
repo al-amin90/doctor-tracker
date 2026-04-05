@@ -3,7 +3,7 @@ import { RootState } from "@/redux/store";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type TAuthState = {
-  user: TUser | null;
+  user: IUser | null;
   accessToken: string | null;
   isAuthenticated: boolean;
 };

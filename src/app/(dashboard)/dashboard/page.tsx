@@ -193,7 +193,7 @@ export default function DashboardPage() {
                       </Badge>
                     </div>
                     <p className="text-xs text-slate-400 shrink-0">
-                      {format(parseISO(p.createdAt), "MMM d")}
+                      {p.createdAt ? format(parseISO(p.createdAt), "MMM d") : ''}
                     </p>
                   </div>
                 ))}

@@ -1,9 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { baseApi } from "@/redux/api/baseApi";
 import { dynamicTag } from "@/redux/utils/dynamicTag";
 
 const dynamicApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getDynamic: builder.query({
+    getDynamic: builder.query<
+      { success: boolean; message: string; data: any; meta?: any },
+      { url: string; params?: Record<string, any> }
+    >({
       query: ({ url, params }) => ({ url, params, method: "GET" }),
       providesTags: dynamicTag,
     }),

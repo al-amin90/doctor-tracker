@@ -23,10 +23,11 @@ import {
 import { IPatient } from "@/modules/patient/patient.interface";
 import { useGetDynamicQuery } from "@/redux/features/dynamic/dynamicApi";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { IDoctor } from "@/modules/doctor/doctor.interface";
 
 const schema = z.object({
   name: z.string().min(2),
-  age: z.coerce.number().min(0),
+  age: z.string().min(1),
   gender: z.enum(["male", "female", "other"]),
   condition: z.string().min(2),
   phone: z.string().min(7),
@@ -64,7 +65,15 @@ export default function PatientForm({
     setValue,
     watch,
     formState: { errors },
-  } = useForm<TForm>({ resolver: zodResolver(schema) });
+  } = useForm<TForm>({
+    resolver: zodResolver(schema),
+    defaultValues: defaultValues
+      ? {
+          ...defaultValues,
+          age: defaultValues.age ? String(defaultValues.age) : "",
+        }
+      : undefined,
+  });
 
   const { data: doctorsData } = useGetDynamicQuery(
     {
@@ -85,10 +94,13 @@ export default function PatientForm({
         : ((defaultValues?.doctorId?._id as string | undefined) ?? "");
 
       reset({
-        ...defaultValues,
-        age: defaultValues?.age ?? undefined,
-        gender: defaultValues?.gender ?? undefined,
-        doctorId: doctorId ?? "",
+        name: defaultValues?.name || "",
+        age: defaultValues?.age ? String(defaultValues.age) : "",
+        gender: defaultValues?.gender || "male",
+        condition: defaultValues?.condition || "",
+        phone: defaultValues?.phone || "",
+        email: defaultValues?.email || "",
+        doctorId: doctorId || "",
       });
     }
   }, [open, defaultValues, defaultDoctorId, reset, hideDoctorField]);
@@ -127,7 +139,9 @@ export default function PatientForm({
         </DialogHeader>
 
         <form
-          onSubmit={handleSubmit((d) => onSubmit(d as Record<string, unknown>))}
+          onSubmit={handleSubmit((d) =>
+            onSubmit({ ...d, age: Number(d.age) } as Record<string, unknown>),
+          )}
           className="space-y-3 py-2"
         >
           {textFields.map((f) => (
@@ -191,8 +205,8 @@ export default function PatientForm({
                     <SelectValue placeholder="Select doctor" />
                   </SelectTrigger>
                   <SelectContent className="bg-white dark:bg-slate-900">
-                    {doctors.map((d) => (
-                      <SelectItem key={d._id} value={d._id}>
+                    {(doctors as IDoctor[]).map((d) => (
+                      <SelectItem key={d._id} value={d._id!}>
                         {d.name}
                       </SelectItem>
                     ))}

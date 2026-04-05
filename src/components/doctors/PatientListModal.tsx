@@ -18,6 +18,7 @@ import { toast } from "sonner";
 import Pagination from "@/components/shared/Pagination";
 import SearchInput from "@/components/shared/SearchInput";
 import { IDoctor } from "@/modules/doctor/doctor.interface";
+import { IPatient } from "@/modules/patient/patient.interface";
 import {
   useDeleteDynamicMutation,
   useGetDynamicQuery,
@@ -141,7 +142,7 @@ export default function PatientListModal({
                 <p className="text-sm">No patients found</p>
               </div>
             ) : (
-              patients.map((p) => (
+              (patients as IPatient[]).map((p) => (
                 <div
                   key={p._id}
                   className="flex items-center gap-3 p-3 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"

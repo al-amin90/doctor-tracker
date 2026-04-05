@@ -1,5 +1,5 @@
 import { IDoctor } from "@/modules/doctor/doctor.interface";
-import { TPatient } from "@/modules/patient/patient.interface";
+import { IPatient } from "@/modules/patient/patient.interface";
 
 export type TMeta = {
   page: number;
@@ -22,5 +22,5 @@ export type TDashboardStats = {
   dailyRegistrations: { date: string; doctors: number; patients: number }[];
   conditionBreakdown: { condition: string; count: number }[];
   recentDoctors: IDoctor[];
-  recentPatients: TPatient[];
+  recentPatients: IPatient[];
 };

@@ -1,4 +1,5 @@
 export interface IDoctor {
+  _id?: string;
   name: string;
   specialization: string;
   hospital: string;
@@ -6,4 +7,6 @@ export interface IDoctor {
   email: string;
   patientCount?: number;
   isDeleted: boolean;
+  createdAt: string;
+  updatedAt?: string;
 }

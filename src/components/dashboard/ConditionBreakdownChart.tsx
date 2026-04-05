@@ -52,7 +52,7 @@ export default function ConditionBreakdownChart({ data }: Props) {
             fontSize: 13,
             boxShadow: "0 4px 24px rgba(0,0,0,0.3)",
           }}
-          formatter={(v: number, name: string) => [v, name]}
+          formatter={(v, name) => [v || 0, name]}
         />
         <Legend
           iconType="circle"

@@ -28,7 +28,7 @@ interface IAuthResponse {
 
 const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    register: builder.mutation<IAuthResponse, IRegisterRequest>({
+    register: builder.mutation<IAuthResponse, IRegisterPayload>({
       query: (credentials: IRegisterPayload) => ({
         url: "auth/register",
         method: "POST",
