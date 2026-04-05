@@ -28,6 +28,8 @@ import {
   usePatchDynamicMutation,
   usePostDynamicMutation,
 } from "@/redux/features/dynamic/dynamicApi";
+import PageHeadingTitle from "@/components/shared/PageHeadingTitle";
+import FilterBar from "@/components/shared/FilterBar";
 
 const CONDITIONS = [
   "Hypertension",
@@ -231,16 +233,8 @@ export default function PatientsPage() {
 
   return (
     <div className="space-y-5">
-      {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div>
-          <h1 className="text-xl font-bold text-slate-800 dark:text-white">
-            Patients
-          </h1>
-          <p className="text-sm text-slate-400 mt-0.5">
-            {meta?.total ?? 0} total patients registered
-          </p>
-        </div>
+        <PageHeadingTitle name={"Patients"} meta={meta} />
 
         <Button
           onClick={() => setCreateOpen(true)}
@@ -251,86 +245,22 @@ export default function PatientsPage() {
         </Button>
       </div>
 
-      {/* Filters */}
-      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 shadow-sm">
-        <div className="flex flex-wrap items-center gap-3">
-          <SearchInput
-            value={searchTerm}
-            onChange={(v) => {
-              setSearchTerm(v);
-              setPage(1);
-            }}
-            placeholder="Search by name, condition..."
-            className="w-64"
-          />
-
-          <Select
-            value={gender}
-            onValueChange={(v) => {
-              setGender(v === "all" ? "" : v);
-              setPage(1);
-            }}
-          >
-            <SelectTrigger className="w-32 h-9 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm">
-              <SelectValue placeholder="Gender" />
-            </SelectTrigger>
-            <SelectContent className="bg-white dark:bg-slate-900">
-              <SelectItem value="all">All Genders</SelectItem>
-              <SelectItem value="male">Male</SelectItem>
-              <SelectItem value="female">Female</SelectItem>
-              <SelectItem value="other">Other</SelectItem>
-            </SelectContent>
-          </Select>
-
-          <Select
-            value={condition}
-            onValueChange={(v) => {
-              setCondition(v === "all" ? "" : v);
-              setPage(1);
-            }}
-          >
-            <SelectTrigger className="w-40 h-9 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm">
-              <SelectValue placeholder="Condition" />
-            </SelectTrigger>
-            <SelectContent className="bg-white dark:bg-slate-900">
-              <SelectItem value="all">All Conditions</SelectItem>
-              {CONDITIONS.map((c) => (
-                <SelectItem key={c} value={c}>
-                  {c}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          <DateRangePicker
-            startDate={startDate}
-            endDate={endDate}
-            onChange={(s, e) => {
-              setStartDate(s);
-              setEndDate(e);
-              setPage(1);
-            }}
-          />
-
-          {(searchTerm || gender || condition || startDate) && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => {
-                setSearchTerm("");
-                setGender("");
-                setCondition("");
-                setStartDate("");
-                setEndDate("");
-                setPage(1);
-              }}
-              className="text-slate-400 hover:text-slate-600 text-xs"
-            >
-              Clear filters
-            </Button>
-          )}
-        </div>
-      </div>
+      <FilterBar
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        setPage={setPage}
+        value={condition}
+        setValue={setCondition}
+        valueOptions={CONDITIONS}
+        valueLabel={"Conditions"}
+        startDate={startDate}
+        endDate={endDate}
+        setStartDate={setStartDate}
+        setEndDate={setEndDate}
+        gender={gender}
+        setGender={setGender}
+        isGenderSelect={true}
+      />
 
       <DataTable
         data={patients}

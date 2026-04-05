@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Eye, EyeOff, Stethoscope, Lock, Mail } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,21 +18,54 @@ import {
 import { useAppDispatch } from "@/redux/store";
 import { useLoginMutation } from "@/redux/features/auth/authApi";
 import { setUser } from "@/redux/features/auth/authSlice";
-import Link from "next/link";
 
-const LoginPage = () => {
+interface LoginForm {
+  email: string;
+  password: string;
+}
+
+interface LoginResponse {
+  data: {
+    user: any;
+    accessToken: string;
+  };
+}
+
+export default function LoginPage() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [login, { isLoading }] = useLoginMutation();
   const [showPassword, setShowPassword] = useState(false);
-  const [form, setForm] = useState({ email: "", password: "" });
+  const [form, setForm] = useState<LoginForm>({ email: "", password: "" });
+  const [errors, setErrors] = useState<Partial<LoginForm>>({});
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // ✅ Form validation
+  const validateForm = (): boolean => {
+    const newErrors: Partial<LoginForm> = {};
+
+    if (!form.email) {
+      newErrors.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+      newErrors.email = "Invalid email format";
+    }
+
+    if (!form.password) {
+      newErrors.password = "Password is required";
+    } else if (form.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      const res = await login(form).unwrap();
 
-      console.log("res", res);
+    if (!validateForm()) return;
+
+    try {
+      const res = (await login(form).unwrap()) as LoginResponse;
 
       dispatch(
         setUser({
@@ -39,12 +73,25 @@ const LoginPage = () => {
           accessToken: res.data.accessToken,
         }),
       );
+
       toast.success("Welcome back!");
-      router.push("/dashboard");
+      router.replace("/dashboard");
     } catch (err: unknown) {
       const error = err as { data?: { message?: string } };
-      toast.error(error?.data?.message || "Login failed");
+      const errorMessage = error?.data?.message || "Login failed";
+      toast.error(errorMessage);
+      setForm((p) => ({ ...p, password: "" }));
     }
+  };
+
+  const handleEmailChange = (value: string) => {
+    setForm((p) => ({ ...p, email: value }));
+    if (errors.email) setErrors((p) => ({ ...p, email: undefined }));
+  };
+
+  const handlePasswordChange = (value: string) => {
+    setForm((p) => ({ ...p, password: value }));
+    if (errors.password) setErrors((p) => ({ ...p, password: undefined }));
   };
 
   return (
@@ -71,8 +118,10 @@ const LoginPage = () => {
               Enter your credentials to access the dashboard
             </CardDescription>
           </CardHeader>
+
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+              {/* Email Field */}
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-blue-100">
                   Email address
@@ -84,15 +133,20 @@ const LoginPage = () => {
                     type="email"
                     placeholder="admin@example.com"
                     value={form.email}
-                    onChange={(e) =>
-                      setForm((p) => ({ ...p, email: e.target.value }))
-                    }
-                    className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-blue-300/60 focus:border-blue-400 focus:ring-blue-400/30"
+                    onChange={(e) => handleEmailChange(e.target.value)}
+                    className={`pl-10 bg-white/10 border-white/20 text-white placeholder:text-blue-300/60 focus:border-blue-400 focus:ring-blue-400/30 ${
+                      errors.email ? "border-red-400" : ""
+                    }`}
+                    disabled={isLoading}
                     required
                   />
                 </div>
+                {errors.email && (
+                  <p className="text-xs text-red-400">{errors.email}</p>
+                )}
               </div>
 
+              {/* Password Field */}
               <div className="space-y-2">
                 <Label htmlFor="password" className="text-blue-100">
                   Password
@@ -104,16 +158,20 @@ const LoginPage = () => {
                     type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
                     value={form.password}
-                    onChange={(e) =>
-                      setForm((p) => ({ ...p, password: e.target.value }))
-                    }
-                    className="pl-10 pr-10 bg-white/10 border-white/20 text-white placeholder:text-blue-300/60 focus:border-blue-400 focus:ring-blue-400/30"
+                    onChange={(e) => handlePasswordChange(e.target.value)}
+                    className={`pl-10 pr-10 bg-white/10 border-white/20 text-white placeholder:text-blue-300/60 focus:border-blue-400 focus:ring-blue-400/30 ${
+                      errors.password ? "border-red-400" : ""
+                    }`}
+                    disabled={isLoading}
                     required
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword((p) => !p)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-blue-300 hover:text-white transition-colors"
+                    aria-label={
+                      showPassword ? "Hide password" : "Show password"
+                    }
                   >
                     {showPassword ? (
                       <EyeOff className="h-4 w-4" />
@@ -122,11 +180,15 @@ const LoginPage = () => {
                     )}
                   </button>
                 </div>
+                {errors.password && (
+                  <p className="text-xs text-red-400">{errors.password}</p>
+                )}
               </div>
 
+              {/* Submit Button */}
               <Button
                 type="submit"
-                className="w-full bg-blue-500 hover:bg-blue-400 text-white font-semibold h-11 transition-all duration-200 shadow-lg shadow-blue-500/30"
+                className="w-full bg-blue-500 hover:bg-blue-400 text-white font-semibold h-11 transition-all duration-200 shadow-lg shadow-blue-500/30 disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -157,22 +219,24 @@ const LoginPage = () => {
                 )}
               </Button>
 
+              {/* Divider */}
               <div className="relative mt-2">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-white/10" />
-                </div>
+                <div className="mx-auto border-t w-[80%] border-white/10" />
                 <div className="relative flex justify-center text-xs">
                   <span className="bg-transparent px-3 text-blue-300/60">
                     Don&apos;t have an account?
                   </span>
                 </div>
+                <div className="mx-auto border-t w-[80%] border-white/10" />
               </div>
 
-              <Link href="/register" className="block mt-4">
+              {/* Register Link */}
+              <Link href="/register">
                 <Button
                   type="button"
                   variant="outline"
                   className="w-full border-white/20 bg-white/5 text-blue-200 hover:bg-white/10 hover:text-white hover:border-white/30 transition-all h-10"
+                  disabled={isLoading}
                 >
                   Create an account
                 </Button>
@@ -187,6 +251,4 @@ const LoginPage = () => {
       </div>
     </div>
   );
-};
-
-export default LoginPage;
+}

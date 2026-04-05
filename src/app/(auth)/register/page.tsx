@@ -115,6 +115,7 @@ const RegisterPage = () => {
               Fill in your details to get started
             </CardDescription>
           </CardHeader>
+
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Name */}
@@ -143,6 +144,7 @@ const RegisterPage = () => {
                 <Label htmlFor="email" className="text-blue-100 text-sm">
                   Email address
                 </Label>
+
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-blue-300" />
                   <Input
@@ -168,7 +170,7 @@ const RegisterPage = () => {
                     setForm((p) => ({ ...p, role: v as "admin" | "user" }))
                   }
                 >
-                  <SelectTrigger className="bg-white/10 border-white/20 text-white focus:border-blue-400 focus:ring-blue-400/30 h-10">
+                  <SelectTrigger className="bg-white/10 !w-[100%] border-white/20 text-white focus:border-blue-400 focus:ring-blue-400/30 h-10">
                     <div className="flex items-center gap-2">
                       {selectedRole && (
                         <selectedRole.icon className="h-4 w-4 text-blue-300 shrink-0" />
@@ -176,7 +178,8 @@ const RegisterPage = () => {
                       <SelectValue />
                     </div>
                   </SelectTrigger>
-                  <SelectContent className="bg-slate-900 border-slate-700 w-full">
+
+                  <SelectContent className="bg-slate-900  !w-[100%] border-slate-700">
                     {roleOptions.map((opt) => (
                       <SelectItem
                         key={opt.value}
@@ -202,6 +205,7 @@ const RegisterPage = () => {
                 <Label htmlFor="password" className="text-blue-100 text-sm">
                   Password
                 </Label>
+
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-blue-300" />
                   <Input
@@ -346,15 +350,16 @@ const RegisterPage = () => {
               </Button>
 
               {/* Divider + Login link */}
-              <div className="relative my-1">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-white/10" />
-                </div>
+              <div className="relative mt-1 mb-6">
+                <div className="mx-auto border-t w-[80%] border-white/10" />
+
                 <div className="relative flex justify-center text-xs">
                   <span className="bg-transparent px-3 text-blue-300/60">
                     Already have an account?
                   </span>
                 </div>
+
+                <div className="mx-auto border-t w-[80%] border-white/10" />
               </div>
 
               <Link href="/login" className="block">

@@ -35,6 +35,8 @@ import {
   usePatchDynamicMutation,
   usePostDynamicMutation,
 } from "@/redux/features/dynamic/dynamicApi";
+import PageHeadingTitle from "@/components/shared/PageHeadingTitle";
+import FilterBar from "@/components/shared/FilterBar";
 
 const SPECIALIZATIONS = [
   "Cardiology",
@@ -221,17 +223,8 @@ export default function DoctorsPage() {
 
   return (
     <div className="space-y-5">
-      {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div>
-          <h1 className="text-xl font-bold text-slate-800 dark:text-white">
-            Doctors
-          </h1>
-          <p className="text-sm text-slate-400 mt-0.5">
-            {meta?.total ?? 0} total doctors registered
-          </p>
-        </div>
-
+        <PageHeadingTitle name={"Doctors"} meta={meta} />
         <Button
           onClick={() => setCreateOpen(true)}
           className="bg-blue-600 hover:bg-blue-700 text-white gap-2 self-start sm:self-auto"
@@ -241,69 +234,20 @@ export default function DoctorsPage() {
         </Button>
       </div>
 
-      {/* Filters */}
-      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 shadow-sm">
-        <div className="flex flex-wrap items-center gap-3">
-          <SearchInput
-            value={searchTerm}
-            onChange={(v) => {
-              setSearchTerm(v);
-              setPage(1);
-            }}
-            placeholder="Search by name, hospital..."
-            className="w-64"
-          />
+      <FilterBar
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        setPage={setPage}
+        value={specialization}
+        setValue={setSpecialization}
+        valueOptions={SPECIALIZATIONS}
+        valueLabel={"Specializations"}
+        startDate={startDate}
+        endDate={endDate}
+        setStartDate={setStartDate}
+        setEndDate={setEndDate}
+      />
 
-          <Select
-            value={specialization}
-            onValueChange={(v) => {
-              setSpecialization(v === "all" ? "" : v);
-              setPage(1);
-            }}
-          >
-            <SelectTrigger className="w-44 h-9 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm">
-              <SelectValue placeholder="Specialization" />
-            </SelectTrigger>
-            <SelectContent className="bg-white dark:bg-slate-900">
-              <SelectItem value="all">All Specializations</SelectItem>
-              {SPECIALIZATIONS.map((s) => (
-                <SelectItem key={s} value={s}>
-                  {s}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          <DateRangePicker
-            startDate={startDate}
-            endDate={endDate}
-            onChange={(s, e) => {
-              setStartDate(s);
-              setEndDate(e);
-              setPage(1);
-            }}
-          />
-
-          {(searchTerm || specialization || startDate) && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => {
-                setSearchTerm("");
-                setSpecialization("");
-                setStartDate("");
-                setEndDate("");
-                setPage(1);
-              }}
-              className="text-slate-400 hover:text-slate-600 text-xs"
-            >
-              Clear filters
-            </Button>
-          )}
-        </div>
-      </div>
-
-      {/* Table */}
       <DataTable
         data={doctors}
         columns={columns}
