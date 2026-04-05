@@ -10,7 +10,7 @@ import config from "@/config";
 import { Handler } from "@/modules/auth/auth.interface";
 
 const catchAsync = (fn: Handler): Handler => {
-  return async (req:NextRequest, context?:any) => {
+  return async (req: NextRequest, context?: any) => {
     try {
       return await fn(req, context);
     } catch (error) {
@@ -58,7 +58,7 @@ export function handleError(err: any): NextResponse {
       success: false,
       message,
       errorSources,
-      stack: config.node_env === "development" ? err?.stack : null,
+      stack: process.env.NODE_ENV === "development" ? err?.stack : null,
     },
     { status: statusCode },
   );

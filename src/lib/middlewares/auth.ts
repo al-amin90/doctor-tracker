@@ -7,11 +7,10 @@ import { Handler, IAuthRequest } from "@/modules/auth/auth.interface";
 import status from "http-status";
 import { verifyToken } from "@/modules/auth/auth.utils";
 
-
 export type TUserRole = "admin" | "user";
 
 const auth = (...requiredRoles: TUserRole[]) => {
-  return (handler: Handler): Handler => {  
+  return (handler: Handler): Handler => {
     return async (req: NextRequest, context?: any) => {
       try {
         const authHeader = req.headers.get("authorization");
@@ -27,7 +26,10 @@ const auth = (...requiredRoles: TUserRole[]) => {
           throw new AppError(status.UNAUTHORIZED, "You are not authorized!");
         }
 
-        const decoded = verifyToken(token, config.jwt_access_token as string)
+        const decoded = verifyToken(
+          token,
+          process.env.JWT_ACCESS_TOKEN as string,
+        );
 
         if (
           requiredRoles.length &&
@@ -46,6 +48,5 @@ const auth = (...requiredRoles: TUserRole[]) => {
     };
   };
 };
-
 
 export default auth;

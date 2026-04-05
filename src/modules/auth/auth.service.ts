@@ -34,13 +34,13 @@ export const login = async (payload: ILoginPayload) => {
 
   const accessToken = createToken(
     tokenPayload,
-    config.jwt_access_token as string,
-    config.jwt_access_expires_in as string,
+    process.env.JWT_ACCESS_TOKEN as string,
+    process.env.JWT_ACCESS_EXPIRES_IN as string,
   );
   const refreshToken = createToken(
     tokenPayload,
-    config.jwt_refresh_token as string,
-    config.jwt_refresh_expires_in as string,
+    process.env.JWT_REFRESH_TOKEN as string,
+    process.env.JWT_REFRESH_EXPIRES_IN as string,
   );
 
   return {

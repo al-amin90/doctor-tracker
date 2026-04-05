@@ -29,7 +29,7 @@ const userSchema = new Schema<IUser, IUserModel>(
 userSchema.pre("save", async function () {
   this.password = await bcrypt.hash(
     this.password,
-    Number(config.bcrypt_salt_rounds) || 12,
+    Number(process.env.BCRYPT_SALT_ROUNDS || "12"),
   );
 });
 
