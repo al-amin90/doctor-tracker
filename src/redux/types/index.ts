@@ -18,4 +18,4 @@ export interface RootState {
   [baseApi.reducerPath]: ReturnType<typeof baseApi.reducer>;
 }
 
-export type TReduxQuery = { url: string; data: unknown; params: unknown };
+export type TReduxQuery = { url: string; data?: unknown; params: unknown };
