@@ -76,7 +76,6 @@ export default function PatientListModal({
 
   const handleAdd = async (formData: Record<string, unknown>) => {
     const formmateData = { ...formData, doctorId: doctor?._id };
-    console.log("formmateData", formmateData);
 
     try {
       await createPatient({ url: "patients", data: formmateData }).unwrap();

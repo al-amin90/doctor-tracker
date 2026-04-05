@@ -13,7 +13,6 @@ export const register = async (payload: IRegisterPayload) => {
   if (exists) throw new AppError(status.CONFLICT, "Email already registered");
 
   const user = await UserModel.create(payload);
-  console.log("user", user);
   return user;
 };
 
@@ -29,7 +28,6 @@ export const login = async (payload: ILoginPayload) => {
     payload.password,
     user.password,
   );
-  console.log("isMatch", isMatch);
   if (!isMatch) throw new AppError(status.UNAUTHORIZED, "Invalid credentials");
 
   const tokenPayload = { id: user._id, email: user.email, role: user.role };

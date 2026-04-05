@@ -36,8 +36,6 @@ export default function Sidebar() {
   const [logout] = useLogoutMutation();
   const user = useAppSelector(selectUser);
 
-  console.log("user", user);
-
   const handleLogout = async () => {
     await logout({});
     dispatch(logoutUser());

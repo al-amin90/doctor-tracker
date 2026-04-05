@@ -20,8 +20,6 @@ export default function DashboardLayout({
   const isAuthenticated = useAppSelector((s) => s.auth.isAuthenticated);
   const { data, isError } = useGetMeQuery();
 
-  console.log("data", data);
-
   useEffect(() => {
     if (isError) router.replace("/login");
   }, [isError, router]);

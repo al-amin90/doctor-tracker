@@ -20,7 +20,6 @@ const baseQuery = fetchBaseQuery({
       return headers;
     }
 
-    console.log("!token", token);
     // If no token in state, try to get from localStorage (client-side only)
     if (!token) {
       try {
@@ -29,7 +28,6 @@ const baseQuery = fetchBaseQuery({
           const parsed = JSON.parse(raw);
           token = parsed.token ? JSON.parse(parsed.token) : null;
         }
-        console.log("rawf", raw);
       } catch (e) {
         console.error("Error parsing auth data:", e);
       }

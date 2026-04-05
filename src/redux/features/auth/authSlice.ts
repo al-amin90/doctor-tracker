@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { IUser } from "@/modules/auth/auth.interface";
 import { RootState } from "@/redux/store";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";

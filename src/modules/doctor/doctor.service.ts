@@ -34,7 +34,6 @@ const getAllDoctors = async (query: Record<string, unknown>) => {
 const getDoctorById = async (id: string) => {
   await dbConnect();
   const doctor = await DoctorModel.findById(id);
-  console.log("i ama hit");
 
   if (!doctor) throw new AppError(status.NOT_FOUND, "Doctor not found");
 

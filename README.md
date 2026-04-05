@@ -1,8 +1,6 @@
 # Doctor Tracker
 
-A secure, full-stack administrative portal built with Next.js 15 for managing doctors and their patients. Features a real-time dashboard with data visualizations, advanced search/filter/pagination, JWT-based authentication with httpOnly cookies, and a clean modular backend architecture — all within a single Next.js application.
-
----
+## A Secure full-stack project that manage doctors and their patients. A real Time Dashboard, advanced search/filter/pagination, JWT-based authentication with httpOnly cookies, and a clean modular backend architecture — all within a single Next.js application.
 
 ## Setup Guide
 
@@ -70,17 +68,33 @@ Browser (Next.js App Router)
 
 ### 1. Redux over Context API
 
-Redux was chosen over React's Context API for state management because the application requires complex state interactions across multiple components (auth state, API cache, form states). Redux provides predictable state updates through actions/reducers, time-travel debugging with Redux DevTools, and middleware support for async operations. Context API would lead to unnecessary re-renders and prop-drilling in a large-scale app, while Redux's single store and selectors optimize performance.
+If Project small we can chose Context api. but the task say "Scalability considerations" thats why we chose redux. it help management complex state interactions across multiple components (auth state, API cache, form states). I can always store and selectors data easily. It has time-travel debugging with Redux DevTools and caching system with deep copy.
 
 ### 2. Soft Delete over Hard Delete
 
-Both `DoctorModel` and `PatientModel` use an `isDeleted` flag rather than `findByIdAndDelete`. A Mongoose query middleware (`pre(/^find/)`) automatically filters out deleted documents system-wide. This preserves referential integrity — a deleted doctor's historical patient records remain queryable for audit/reporting — and makes accidental deletions recoverable without a separate audit log table.
+Both DoctorModel and PatientModel has isDeleted. if i delete the documents we can't has deleted doctor's historical patient records remain queryable for audit/reporting — and makes accidental deletions recoverable without a separate audit log table. When i fetch i insure it that find aggregation findOne documentsCount all the method when it query it always give not deleted data.
+
+`For Scalability considerations i design Architecture in modular pattern. Use like catchAsynce, sendResponce, QueryBuilder, errorHandler etc utilis.`
 
 ---
 
 ## Visual Evidence
 
-_(Add desktop and mobile screenshots here after running the app)_
+_(desktop screenshots here after running the app)_
+this is dashboard  
+![App Screenshot](./public/dashboard.png)
+
+this is doctor list  
+![App Screenshot](./public/doctorPC.png)
+
+this is doctor assign pathient  
+![App Screenshot](./public/modalInPC.png)
+
+_(mobile screenshots here after running the app)_
+![App Screenshot](./public/dashboardMobile2.png)
+![App Screenshot](./public/mobilePathiens.png)
+![App Screenshot](./public/modalInMobile.png)
+![App Screenshot](./public/mobilePathiens.png)
 
 ---
 

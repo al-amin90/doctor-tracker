@@ -81,10 +81,6 @@ export default function PatientsPage() {
   const patients = data?.data ?? [];
   const meta = data?.meta;
 
-  useEffect(() => {
-    console.log("PAGE CHANGED TO:", page);
-  }, [page]);
-
   const handleCreate = async (form: Record<string, unknown>) => {
     try {
       await createPatient({ url: "patients", data: form }).unwrap();
@@ -227,9 +223,6 @@ export default function PatientsPage() {
       ),
     },
   ];
-
-  console.log("data", data);
-  console.log("editPatient", editPatient);
 
   return (
     <div className="space-y-5">
