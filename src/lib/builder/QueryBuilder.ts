@@ -23,10 +23,35 @@ class QueryBuilder<T> {
 
   filter() {
     const queryObj = { ...this.query };
-    const excludeFields = ["searchTerm", "sort", "limit", "page", "selects"];
+    const excludeFields = [
+      "searchTerm",
+      "sort",
+      "limit",
+      "page",
+      "selects",
+      "startDate",
+      "endDate",
+    ];
     excludeFields.forEach((el) => delete queryObj[el]);
 
     const finalQuery = { isDeleted: false, ...queryObj };
+
+    const dateFilter = {};
+
+    if (this.query.startDate) {
+      dateFilter.$gte = new Date(this.query.startDate as string);
+    }
+
+    if (this.query.endDate) {
+      const endDate = new Date(this.query.endDate as string);
+      endDate.setDate(endDate.getDate() + 1);
+      dateFilter.$lt = endDate;
+    }
+
+    if (Object.keys(dateFilter).length > 0) {
+      finalQuery.createdAt = dateFilter;
+    }
+
     this.modelQuery = this.modelQuery.find(finalQuery);
     return this;
   }
