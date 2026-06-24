@@ -1,8 +1,34 @@
 # Doctor Tracker
 
-A Secure full-stack project that manage doctors and their patients. A real Time Dashboard, advanced search/filter/pagination, JWT-based authentication with httpOnly cookies, and a clean modular backend architecture — all within a single Next.js application.
+Doctor Tracker is a modern full-stack healthcare management system built with Next.js. It helps organizations manage doctors, patients, appointments, and dashboard insights through a secure and responsive interface.
 
-## Setup Guide
+## 🔐 Admin Login
+
+Use the following admin credentials to sign in:
+
+- Email: ijesun@gmail.com
+- Password: 12345678
+
+## ✨ Features
+
+- Secure authentication with JWT and httpOnly cookies
+- Role-based access for admin users
+- Doctor and patient management
+- Dashboard analytics with charts and statistics
+- Advanced search, filtering, and pagination
+- Clean modular backend architecture
+- Responsive UI for desktop and mobile
+
+## 🛠️ Technology Stack
+
+- Frontend: Next.js, React, TypeScript, Tailwind CSS
+- UI Components: shadcn/ui, Radix UI, Lucide React
+- State Management: Redux Toolkit, RTK Query
+- Backend: Next.js API routes, Mongoose, MongoDB
+- Validation & Security: Zod, JWT, bcrypt
+- Charts: Recharts
+
+## 🚀 Getting Started
 
 ### Prerequisites
 
@@ -12,100 +38,48 @@ A Secure full-stack project that manage doctors and their patients. A real Time 
 ### Installation
 
 ```bash
-git clone https://github.com/your-repo/doctor-tracker.git
+git clone <your-repo-url>
 cd doctor-tracker
 npm install
 ```
 
-Copy the example env file and fill in your values:
+Create your environment file:
 
 ```bash
 cp .env.example .env.local
 ```
 
-Install shadcn/ui components:
+Add the required environment variables:
 
-```bash
-npx shadcn@latest init
-npx shadcn@latest add button input label card badge select table dialog alert-dialog avatar skeleton popover calendar sonner
+```env
+DATABASE_URL=your_mongodb_connection_string
+JWT_ACCESS_TOKEN=your_access_secret
+JWT_REFRESH_TOKEN=your_refresh_secret
+JWT_ACCESS_EXPIRES_IN=1d
+JWT_REFRESH_EXPIRES_IN=7d
+BCRYPT_SALT_ROUNDS=12
 ```
 
-Run the dev server:
+Run the development server:
 
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open http://localhost:3000
 
-### First-time Setup
+## 📁 Project Structure
 
-First Register then Login, http://localhost:3000/register
+- src/app: Next.js app routes and pages
+- src/components: reusable UI components
+- src/modules: backend logic for auth, doctors, patients, and dashboard
+- src/lib: database, middleware, errors, and utility helpers
+- src/redux: global state and API integration
 
----
+## 📸 Screenshots
 
-## System Architecture
+The app includes a dashboard view, doctor management pages, and patient management flows with a responsive layout.
 
-```
-Browser (Next.js App Router)
-    │
-    ├── Redux Store (RTK Query) ──► /api/* (Next.js Route Handlers)
-    │                                        │
-    │                               modules/*/controller.ts
-    │                                        │
-    │                               modules/*/service.ts
-    │                                        │
-    │                               Mongoose Models ──► MongoDB
-    │
-    └── httpOnly Cookies (JWT) ──► auth middleware on every API route
-```
+## 🧩 Notes
 
-**Data flow:** UI dispatches RTK Query → API route handler → module controller → service with QueryBuilder → MongoDB → serialized response → Redux cache → React component re-render.
-
----
-
-## Technical Decisions
-
-### 1. Redux over Context API
-
-If Project small we can chose Context api. but the task say "Scalability considerations" thats why we chose redux. it help management complex state interactions across multiple components (auth state, API cache, form states). I can always store and selectors data easily. It has time-travel debugging with Redux DevTools and caching system with deep copy.
-
-### 2. Soft Delete over Hard Delete
-
-Both DoctorModel and PatientModel has isDeleted. if i delete the documents we can't has deleted doctor's historical patient records remain queryable for audit/reporting — and makes accidental deletions recoverable without a separate audit log table. When i fetch i insure it that find aggregation findOne documentsCount all the method when it query it always give not deleted data.
-
-`For Scalability considerations i design Architecture in modular pattern. Use like catchAsynce, sendResponce, QueryBuilder, errorHandler etc utilis.`
-
----
-
-01745024774 tikka ovi mamato vai
-
-## Visual Evidence
-
-_(desktop screenshots here after running the app)_
-this is dashboard  
-![App Screenshot](./public/dashboard.png)
-
-![App Screenshot](./public/doctorPC.png)
-
-this is doctor assign pathient  
-![App Screenshot](./public/modalInPC.png)
-
-_(mobile screenshots here after running the app)_
-![App Screenshot](./public/dashbordic.png)
-![App Screenshot](./public/mobilePathiens.png)
-![App Screenshot](./public/modalInMobile.png)
-![App Screenshot](./public/mobilePathiens.png)
-
----
-
-## Environment Variables
-
-| Variable                 | Description               |
-| ------------------------ | ------------------------- |
-| `DATABASE_URL`           | MongoDB connection string |
-| `JWT_ACCESS_TOKEN`       | Access token secret       |
-| `JWT_REFRESH_TOKEN`      | Refresh token secret      |
-| `JWT_ACCESS_EXPIRES_IN`  | e.g. `1d`                 |
-| `JWT_REFRESH_EXPIRES_IN` | e.g. `7d`                 |
-| `BCRYPT_SALT_ROUNDS`     | e.g. `12`                 |
+This project follows a modular architecture to make the codebase scalable and easier to maintain for future feature expansion.
